@@ -1,0 +1,31 @@
+# Binaries
+/user-service
+
+# Go build cache & modules
+/pkg/
+*.exe
+*.test
+*.out
+
+# VCS
+.git
+.gitignore
+
+# IDE/editor
+.vscode/
+.idea/
+*.swp
+
+# OS & editor metadata
+.DS_Store
+Thumbs.db
+
+# Dependency vendors (if not vendoring explicitly)
+/vendor/
+
+# Docker artifacts
+Dockerfile
+.dockerignore
+
+# Env files
+.env
