@@ -6,7 +6,6 @@ import (
 )
 
 type Config struct {
-	Port   string
 	DBHost string
 	DBPort string
 	DBUser string
@@ -16,7 +15,6 @@ type Config struct {
 
 func Load() Config {
 	return Config{
-		Port:   os.Getenv("PORT"),
 		DBHost: os.Getenv("DB_HOST"),
 		DBPort: os.Getenv("DB_PORT"),
 		DBUser: os.Getenv("DB_USER"),
@@ -26,6 +24,5 @@ func Load() Config {
 }
 
 func (c Config) DSN() string {
-	return fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
-		c.DBHost, c.DBUser, c.DBPass, c.DBName, c.DBPort)
+	return fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable", c.DBHost, c.DBUser, c.DBPass, c.DBName, c.DBPort)
 }

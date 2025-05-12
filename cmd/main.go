@@ -1,8 +1,11 @@
 package main
 
 import (
+	"fmt"
 	"log"
+	"os"
 
+	"github.com/joho/godotenv"
 	"github.com/user-service/internal/config"
 	"github.com/user-service/internal/handler"
 	"github.com/user-service/internal/repository"
@@ -13,7 +16,13 @@ import (
 )
 
 func main() {
+	// load
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatalf("err loading: %v", err)
+	}
 	cfg := config.Load()
+	fmt.Println("data", os.Getenv("DB_HOST"))
 
 	db, err := gorm.Open(postgres.Open(cfg.DSN()), &gorm.Config{})
 	if err != nil {
@@ -23,5 +32,5 @@ func main() {
 
 	r := gin.Default()
 	handler.RegisterRoutes(r)
-	log.Fatal(r.Run(":" + cfg.Port))
+	log.Fatal(r.Run(":" + cfg.DBPort))
 }
