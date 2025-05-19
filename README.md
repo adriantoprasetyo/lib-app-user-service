@@ -8,3 +8,6 @@ This service managing user, include :
 
 ```bash
 # go mod tidy
+
+```postgreSQL (enable uuid_generate_v4())
+# CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
