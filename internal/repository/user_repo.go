@@ -7,20 +7,26 @@ import (
 	"gorm.io/gorm"
 )
 
-var db *gorm.DB
-
-func InitRepository(d *gorm.DB) {
-	db = d
-	db.AutoMigrate(&model.User{})
+type UserRepository interface {
+	CreateUser(u model.User)
+	GetUser(id string) *model.User
 }
 
-func CreateUser(u model.User) {
-	db.Create(&u)
+type userRepository struct {
+	db *gorm.DB
 }
 
-func GetUser(id string) *model.User {
+func NewUserRepository(db *gorm.DB) UserRepository {
+	return &userRepository{db: db}
+}
+
+func (c userRepository) CreateUser(u model.User) {
+	c.db.Create(&u)
+}
+
+func (c userRepository) GetUser(id string) *model.User {
 	var u model.User
-	result := db.First(&u, "id = ?", id)
+	result := c.db.First(&u, "id = ?", id)
 	if result.Error != nil {
 		return nil
 	}

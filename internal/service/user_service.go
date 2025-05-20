@@ -6,16 +6,29 @@ import (
 	"github.com/user-service/pkg"
 )
 
-func CreateUser(u model.User) error {
+type UserService interface {
+	CreateUser(u model.User) error
+	GetUser(id string) *model.User
+}
+
+type userService struct {
+	repo repository.UserRepository
+}
+
+func NewUserService(r repository.UserRepository) UserService {
+	return &userService{repo: r}
+}
+
+func (c *userService) CreateUser(u model.User) error {
 	hash, err := pkg.HashPassword(u.Password)
 	if err != nil {
 		return err
 	}
 	u.Password = hash
-	repository.CreateUser(u)
+	c.repo.CreateUser(u)
 	return nil
 }
 
-func GetUser(id string) *model.User {
-	return repository.GetUser(id)
+func (c *userService) GetUser(id string) *model.User {
+	return c.repo.GetUser(id)
 }
